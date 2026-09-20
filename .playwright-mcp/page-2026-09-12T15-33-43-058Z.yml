@@ -1,0 +1,179 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - link "Bỏ qua đến nội dung chính" [ref=e4] [cursor=pointer]:
+      - /url: "#main-content"
+    - banner [ref=e5]:
+      - generic [ref=e6]:
+        - link [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Garena Logo" [ref=e9]
+          - generic [aria-hidden] [ref=e10]: "|"
+          - heading "Trung tâm nạp thẻ chính thức" [level=1] [ref=e11]
+        - button "Tài khoản cá nhân Garena" [ref=e13] [cursor=pointer]
+    - region "Sự kiện khuyến mãi ShopeePay" [ref=e18]:
+      - img "Khuyến mãi ShopeePay Giảm 50k Napthe.vn" [ref=e20]
+    - navigation "Lựa chọn trò chơi" [ref=e22]:
+      - generic [ref=e38]:
+        - generic [ref=e39]: Lựa chọn trò chơi
+        - tablist "Danh sách game hỗ trợ nạp" [ref=e40]:
+          - tab "FC Mobile VN FC Mobile VN" [ref=e41] [cursor=pointer]:
+            - img "FC Mobile VN" [ref=e43]
+            - generic [ref=e44]: FC Mobile VN
+          - tab "Liên Quân Mobile Liên Quân Mobile" [ref=e45] [cursor=pointer]:
+            - img "Liên Quân Mobile" [ref=e47]
+            - generic [ref=e48]: Liên Quân Mobile
+          - tab "Free Fire Free Fire" [selected] [ref=e49] [cursor=pointer]:
+            - generic [ref=e50]:
+              - img "Free Fire" [ref=e51]
+              - generic [aria-hidden] [ref=e52]: ✓
+            - generic [ref=e53]: Free Fire
+          - tab "Delta Force Delta Force" [ref=e54] [cursor=pointer]:
+            - img "Delta Force" [ref=e56]
+            - generic [ref=e57]: Delta Force
+          - tab "Nạp Sò Nạp Sò" [ref=e58] [cursor=pointer]:
+            - img "Nạp Sò" [ref=e60]
+            - generic [ref=e61]: Nạp Sò
+          - tab "FC Online (VN) FC Online (VN)" [ref=e62] [cursor=pointer]:
+            - img "FC Online (VN)" [ref=e64]
+            - generic [ref=e65]: FC Online (VN)
+          - tab "FC Online M (VN) FC Online M (VN)" [ref=e66] [cursor=pointer]:
+            - img "FC Online M (VN)" [ref=e68]
+            - generic [ref=e69]: FC Online M (VN)
+          - tab "Cái thế tranh hùng Cái thế tranh hùng" [ref=e70] [cursor=pointer]:
+            - img "Cái thế tranh hùng" [ref=e72]
+            - generic [ref=e73]: Cái thế tranh hùng
+    - region "Thông tin game đang chọn" [ref=e74]:
+      - generic [ref=e77]:
+        - img "Free Fire" [ref=e79]
+        - generic [ref=e80]:
+          - heading "Free Fire" [level=2] [ref=e81]
+          - generic [ref=e82]: Thanh toán an toàn 100%
+    - main [ref=e87]:
+      - region "Bước 1 Đăng nhập UID" [ref=e88]:
+        - generic [ref=e89]:
+          - generic [ref=e91]:
+            - generic [aria-hidden] [ref=e92]: "1"
+            - heading "Đăng nhập" [level=3] [ref=e93]
+          - generic [ref=e95]:
+            - generic [ref=e96]:
+              - text: ID người chơi
+              - img [aria-hidden] [ref=e97]:
+                - generic [ref=e99]: "?"
+            - generic [ref=e100]:
+              - textbox "ID người chơi" [ref=e102]:
+                - /placeholder: Hãy nhập UID của bạn
+              - button "Đăng nhập" [ref=e103] [cursor=pointer]
+            - generic [ref=e104]:
+              - generic [ref=e105]: Hoặc đăng nhập bằng tài khoản game của bạn
+              - group "Đăng nhập mạng xã hội" [ref=e106]:
+                - button "Đăng nhập Facebook" [ref=e107] [cursor=pointer]:
+                  - img "Facebook logo" [ref=e108]
+                - button "Đăng nhập Google" [ref=e110] [cursor=pointer]:
+                  - img "Google logo" [ref=e111]
+                - button "Đăng nhập Twitter X" [ref=e117] [cursor=pointer]:
+                  - img "Twitter logo" [ref=e118]
+                - button "Đăng nhập VK" [ref=e120] [cursor=pointer]:
+                  - img "VK logo" [ref=e121]
+      - region "Bước 2 Mệnh giá nạp" [ref=e123]:
+        - generic [ref=e124]:
+          - generic [aria-hidden] [ref=e125]: "2"
+          - heading "Mệnh giá nạp" [level=3] [ref=e126]
+        - tablist "Loại hình nạp thẻ" [ref=e127]:
+          - tab "Nạp Online" [selected] [ref=e128] [cursor=pointer]
+          - tab "Thẻ Garena" [disabled] [ref=e129]
+          - tab "Shop" [ref=e130] [cursor=pointer]
+        - radiogroup "Chọn mệnh giá" [ref=e131]:
+          - radio "5.000 đ Diamond 25" [ref=e132] [cursor=pointer]:
+            - generic [ref=e133]: 5.000 đ
+            - generic [ref=e134]:
+              - img "Diamond" [ref=e135]
+              - generic [ref=e136]: "25"
+          - radio "10.000 đ Diamond 51" [ref=e137] [cursor=pointer]:
+            - generic [ref=e138]: 10.000 đ
+            - generic [ref=e139]:
+              - img "Diamond" [ref=e140]
+              - generic [ref=e141]: "51"
+          - radio "20.000 đ Diamond 113" [ref=e142] [cursor=pointer]:
+            - generic [ref=e143]: 20.000 đ
+            - generic [ref=e144]:
+              - img "Diamond" [ref=e145]
+              - generic [ref=e146]: "113"
+          - radio "50.000 đ Diamond 283" [ref=e147] [cursor=pointer]:
+            - generic [ref=e148]: 50.000 đ
+            - generic [ref=e149]:
+              - img "Diamond" [ref=e150]
+              - generic [ref=e151]: "283"
+          - radio "100.000 đ Diamond 566" [ref=e152] [cursor=pointer]:
+            - generic [ref=e153]: 100.000 đ
+            - generic [ref=e154]:
+              - img "Diamond" [ref=e155]
+              - generic [ref=e156]: "566"
+          - radio "200.000 đ Diamond 1.132" [ref=e157] [cursor=pointer]:
+            - generic [ref=e158]: 200.000 đ
+            - generic [ref=e159]:
+              - img "Diamond" [ref=e160]
+              - generic [ref=e161]: "1.132"
+          - radio "500.000 đ Diamond 2.830" [ref=e162] [cursor=pointer]:
+            - generic [ref=e163]: 500.000 đ
+            - generic [ref=e164]:
+              - img "Diamond" [ref=e165]
+              - generic [ref=e166]: "2.830"
+          - radio "1.000.000 đ Diamond 5.750" [ref=e167] [cursor=pointer]:
+            - generic [ref=e168]: 1.000.000 đ
+            - generic [ref=e169]:
+              - img "Diamond" [ref=e170]
+              - generic [ref=e171]: "5.750"
+          - radio "2.000.000 đ Diamond 11.500" [ref=e172] [cursor=pointer]:
+            - generic [ref=e173]: 2.000.000 đ
+            - generic [ref=e174]:
+              - img "Diamond" [ref=e175]
+              - generic [ref=e176]: "11.500"
+      - region "Bước 3 Phương thức thanh toán" [ref=e177]:
+        - generic [ref=e178]:
+          - generic [aria-hidden] [ref=e179]: "3"
+          - heading "Phương thức thanh toán" [level=3] [ref=e180]
+        - generic [ref=e181]: "Chọn mệnh giá tạo mã QR bên dưới, đăng nhập ứng dụng Ngân hàng chọn QR Pay quét mã QR hoàn tất thanh toán. Lưu ý: Quét mã QR bằng ứng dụng Momo chưa được hỗ trợ."
+        - radiogroup "Chọn phương thức thanh toán" [ref=e185]:
+          - radio "Ví ShopeePay Ví ShopeePay" [disabled] [ref=e186]:
+            - generic [ref=e187]:
+              - img "Ví ShopeePay" [ref=e188]
+              - generic [ref=e189]: Ví ShopeePay
+          - radio "Garena Sò Garena Sò" [disabled] [ref=e190]:
+            - generic [ref=e191]:
+              - img "Garena Sò" [ref=e192]
+              - generic [ref=e193]: Garena Sò
+          - radio "QR Pay QR Pay HOT" [ref=e194] [cursor=pointer]:
+            - generic [ref=e195]:
+              - img "QR Pay" [ref=e196]
+              - generic [ref=e197]: QR Pay
+            - generic [ref=e198]: HOT
+          - radio "Thanh toán qua App Ngân Hàng Thanh toán qua App Ngân Hàng" [disabled] [ref=e199]:
+            - generic [ref=e200]:
+              - img "Thanh toán qua App Ngân Hàng" [ref=e201]
+              - generic [ref=e202]: Thanh toán qua App Ngân Hàng
+          - radio "ATM - iBanking ATM - iBanking" [disabled] [ref=e203]:
+            - generic [ref=e204]:
+              - img "ATM - iBanking" [ref=e205]
+              - generic [ref=e206]: ATM - iBanking
+          - radio "Credit Card;Debit Card Credit Card;Debit Card" [disabled] [ref=e207]:
+            - generic [ref=e208]:
+              - img "Credit Card;Debit Card" [ref=e209]
+              - generic [ref=e210]: Credit Card;Debit Card
+    - contentinfo [ref=e211]:
+      - generic [ref=e212]:
+        - generic [ref=e213]: "CÔNG TY CỔ PHẦN SHOPEEPAY | Giấy CNĐKKD số 0103959912 | Cơ quan cấp: Phòng Đăng ký kinh doanh - Sở Kế hoạch và Đầu tư TP Hà Nội | Địa chỉ trụ sở chính: Tầng 5, Tháp 2, Tòa nhà Capital Place, số 29 Liễu Giai, Phường Ngọc Khánh, Quận Ba Đình, TP Hà Nội, Việt Nam"
+        - navigation "Liên kết điều khoản" [ref=e214]:
+          - link "Câu hỏi thường gặp" [ref=e215] [cursor=pointer]:
+            - /url: "#faq"
+          - generic [aria-hidden] [ref=e216]: "|"
+          - link "Trung tâm trợ giúp" [ref=e217] [cursor=pointer]:
+            - /url: "#help"
+          - generic [aria-hidden] [ref=e218]: "|"
+          - link "Điều khoản dịch vụ" [ref=e219] [cursor=pointer]:
+            - /url: "#terms"
+          - generic [aria-hidden] [ref=e220]: "|"
+          - link "Chính sách bảo mật" [ref=e221] [cursor=pointer]:
+            - /url: "#privacy"
+  - generic [ref=e222]:
+    - generic "Toggle devtools panel" [ref=e223] [cursor=pointer]
+    - generic "Toggle Component Inspector" [ref=e229] [cursor=pointer]
