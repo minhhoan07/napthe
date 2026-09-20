@@ -438,7 +438,7 @@ const confirmPaymentComplete = () => {
         if (typeof window !== 'undefined') {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-    }, 1500);
+    }, 5000);
 };
 
 const resetToForm = () => {
