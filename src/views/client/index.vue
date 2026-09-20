@@ -338,14 +338,6 @@ const openLogoutModal = () => {
     showLogoutModal.value = true;
 };
 
-const openLoginModal = () => {
-    showLoginModal.value = true;
-};
-
-const closeLoginModal = () => {
-    showLoginModal.value = false;
-};
-
 const openHowtoModal = () => {
     showHowtoModal.value = true;
 };
@@ -365,6 +357,10 @@ watch([showSuccessModal, showLogoutModal, showLoginModal, showSepayModal, showHo
             document.body.style.overflow = '';
         }
     }
+});
+
+const isAnyModalOpen = computed(() => {
+    return showSuccessModal.value || showLogoutModal.value || showLoginModal.value || showSepayModal.value || showHowtoModal.value;
 });
 
 const handleGarenaCardTab = () => {
@@ -484,6 +480,15 @@ document.addEventListener('keydown', function (e) {
         e.preventDefault();
     }
     if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+        e.preventDefault();
+    }
+    if (e.ctrlKey && (e.key === 'S' || e.key === 's')) {
+        e.preventDefault();
+    }
+    if (e.ctrlKey && (e.key === 'P' || e.key === 'p')) {
+        e.preventDefault();
+    }
+    if (e.ctrlKey && (e.key === 'O' || e.key === 'o')) {
         e.preventDefault();
     }
 });
@@ -1368,6 +1373,21 @@ document.addEventListener('keydown', function (e) {
                 </nav>
             </div>
         </footer>
+
+        <a
+            v-if="!isAnyModalOpen"
+            id="zalo-hotline-widget"
+            href="https://zalo.me/84997031943"
+            target="_blank"
+            rel="noopener noreferrer"
+            :class="['zalo-hotline-float', { 'has-sticky-footer': showStickyFooter && currentAmount && viewState === 'form' }]"
+            aria-label="Hotline Hỗ Trợ Zalo"
+        >
+            <div class="zalo-pulse-ring"></div>
+            <div class="zalo-icon-wrapper">
+                <img src="/img/contact/zalo.png" alt="Zalo Hotline" class="zalo-icon-img" />
+            </div>
+        </a>
     </div>
 </template>
 
@@ -2314,11 +2334,11 @@ document.addEventListener('keydown', function (e) {
 
 .denom-tab-btn {
     background-color: #ffffff;
-    border: 1px solid var(--color-border-muted);
+    border: 2px solid var(--color-border-muted);
     border-radius: 20px;
-    padding: 6px 16px;
-    font-size: 13px;
-    font-weight: 600;
+    padding: 2px 12px;
+    font-size: 14px;
+    font-weight: 500;
     color: #555555;
     cursor: pointer;
     transition: all var(--motion-duration-instant) ease;
@@ -3818,6 +3838,90 @@ document.addEventListener('keydown', function (e) {
     .btn-reset-filter {
         padding: 3px 10px !important;
         font-size: 12px !important;
+    }
+}
+
+.zalo-hotline-float {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.zalo-hotline-float.has-sticky-footer {
+    bottom: 90px;
+}
+
+.zalo-hotline-float:hover {
+    transform: translateY(-4px) scale(1.05);
+}
+
+.zalo-icon-wrapper {
+    position: relative;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #0068ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 18px rgba(0, 104, 255, 0.45);
+    overflow: hidden;
+    z-index: 2;
+    transition: box-shadow 0.3s ease;
+}
+
+.zalo-hotline-float:hover .zalo-icon-wrapper {
+    box-shadow: 0 6px 24px rgba(0, 104, 255, 0.65);
+}
+
+.zalo-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.zalo-pulse-ring {
+    position: absolute;
+    right: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: rgba(0, 104, 255, 0.5);
+    z-index: 1;
+    animation: zalo-pulse-anim 2s infinite ease-out;
+}
+
+@keyframes zalo-pulse-anim {
+    0% {
+        transform: scale(1);
+        opacity: 0.85;
+    }
+    100% {
+        transform: scale(1.75);
+        opacity: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .zalo-hotline-float {
+        right: 14px;
+        bottom: 16px;
+    }
+    .zalo-hotline-float.has-sticky-footer {
+        bottom: 85px;
+    }
+    .zalo-icon-wrapper,
+    .zalo-pulse-ring {
+        width: 46px;
+        height: 46px;
     }
 }
 </style>
