@@ -1,11 +1,12 @@
 import { sepayConfig } from '../config/sepay';
 
 /**
- * Generate unique 6-digit payment transfer memo (e.g. NAP849201)
+ * Generate unique 19-digit transaction ID (e.g. 9643477460489410227)
  */
 export const generatePaymentCode = () => {
-    const randomDigits = Math.floor(100000 + Math.random() * 900000);
-    return `NAP${randomDigits}`;
+    const part1 = Math.floor(100000000 + Math.random() * 900000000).toString();
+    const part2 = Math.floor(1000000000 + Math.random() * 9000000000).toString();
+    return part1 + part2;
 };
 
 export const getVietQrUrl = (amount, paymentCode) => {

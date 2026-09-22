@@ -417,19 +417,28 @@ const confirmPaymentComplete = () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    const txId = 'NAP-' + Math.floor(10000000 + Math.random() * 90000000);
+    const txId = checkoutPaymentCode.value || generatePaymentCode();
     const itemsStr = activeSubTab.value === 'shop'
         ? selectedShopObject.value.name
         : `${activeDenom.value.items} ${activeGame.value.currencyName}`;
+
+    const itemsCountVal = activeSubTab.value === 'shop'
+        ? selectedShopObject.value.name
+        : (activeDenom.value.items || 25);
+
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    const formattedTime = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`;
 
     currentTransaction.value = {
         id: txId,
         game: activeGame.value.name,
         player: verifiedPlayerName.value || 'Gấu亗PK',
-        amount: currentAmount.value.toLocaleString('vi-VN') + ' đ',
+        amount: (currentAmount.value || 50000).toLocaleString('vi-VN') + ' đ',
         items: itemsStr,
+        itemsCount: itemsCountVal,
         payment: paymentMethods.value.find(p => p.id === selectedPayment.value)?.name || 'QR Pay',
-        time: new Date().toLocaleString('vi-VN'),
+        time: formattedTime,
     };
 
     setTimeout(() => {
@@ -438,7 +447,7 @@ const confirmPaymentComplete = () => {
         if (typeof window !== 'undefined') {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-    }, 5000);
+    }, 1200);
 };
 
 const resetToForm = () => {
@@ -1203,55 +1212,70 @@ document.addEventListener('keydown', function (e) {
         <main v-else-if="viewState === 'success'" id="main-content" class="result-main-container" tabindex="-1"
             :style="{ backgroundImage: `url(${activeGame.bgr || '/bgr/FF-06d91604.png'})` }">
             <div class="result-content-box">
-                <div class="result-bg-illustration">
-                    <img src="/bgr/FF-06d91604.png" alt="Background Illustration" class="result-sketch-img" />
-                </div>
+                <div class="result-header-banner" :style="{ backgroundImage: `linear-gradient(to bottom, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.98) 100%), url(${activeGame.banner || '/img/banner/ff.jpg'})` }">
+                    <div class="result-bg-illustration">
+                        <img src="/bgr/FF-06d91604.png" alt="Background Illustration" class="result-sketch-img" />
+                    </div>
 
-                <div class="result-status-icon-wrapper">
-                    <svg class="success-check-svg" width="56" height="56" viewBox="0 0 56 56" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="28" cy="28" r="26" fill="rgb(216, 26, 13)" fill-opacity="0.1"
-                            stroke="rgb(216, 26, 13)" stroke-width="3" />
-                        <path d="M18 28.5L25 35.5L38 20.5" stroke="rgb(216, 26, 13)" stroke-width="4"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </div>
+                    <div class="result-status-icon-wrapper">
+                        <svg class="green-check-circle-svg" width="86" height="86" viewBox="0 0 68 68" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="34" cy="37" r="23" stroke="#25c974" stroke-width="4.5" fill="none" />
+                            <path d="M20 36L31 47L53 18" stroke="#25c974" stroke-width="5" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
 
-                <h2 class="result-title-text">Đang chờ xử lý</h2>
-                <p class="result-sub-text">Cảm ơn bạn, phản hồi nạp thẻ từ máy chủ đang được tiếp nhận và xử lý!</p>
+                    <h2 class="result-title-text">Thanh toán đã hoàn tất!</h2>
+                    
+                    <div v-if="currentTransaction" class="result-id-block">
+                        <span class="result-id-label">ID giao dịch</span>
+                        <div class="result-id-val-row">
+                            <span class="result-id-code">{{ currentTransaction.id }}</span>
+                            <button class="btn-copy-tx-id" type="button" title="Sao chép ID giao dịch" @click="copyTransactionId">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
                 <div v-if="currentTransaction" class="result-bill-card">
                     <div class="bill-row">
-                        <span class="bill-label">Mã giao dịch:</span>
-                        <strong class="bill-val-code">{{ currentTransaction.id }}</strong>
+                        <span class="bill-label">Tổng cộng</span>
+                        <div v-if="activeSubTab === 'shop'" class="bill-val">
+                            {{ currentTransaction.items }}
+                        </div>
+                        <div v-else class="bill-val-items">
+                            <img src="/img/icon/kclogo.png" alt="Diamond" class="bill-kc-icon" />
+                            <span>{{ typeof currentTransaction.itemsCount === 'number' ? currentTransaction.itemsCount.toLocaleString('vi-VN') : currentTransaction.itemsCount }}</span>
+                        </div>
                     </div>
                     <div class="bill-row">
-                        <span class="bill-label">Trò chơi:</span>
-                        <span class="bill-val">{{ currentTransaction.game }}</span>
-                    </div>
-                    <div class="bill-row">
-                        <span class="bill-label">Số tiền:</span>
+                        <span class="bill-label">Giá</span>
                         <span class="bill-val">{{ currentTransaction.amount }}</span>
                     </div>
                     <div class="bill-row">
-                        <span class="bill-label">Nhận được:</span>
-                        <strong class="bill-val-red">{{ currentTransaction.items }}</strong>
+                        <span class="bill-label">Game</span>
+                        <span class="bill-val">{{ currentTransaction.game }}</span>
                     </div>
                     <div class="bill-row">
-                        <span class="bill-label">Kênh nạp:</span>
+                        <span class="bill-label">Phương thức thanh toán</span>
                         <span class="bill-val">{{ currentTransaction.payment }}</span>
                     </div>
                     <div class="bill-row">
-                        <span class="bill-label">Thời gian:</span>
+                        <span class="bill-label">Thời gian giao dịch</span>
                         <span class="bill-val">{{ currentTransaction.time }}</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="result-action-row">
-                <button id="btn-return-home-success" class="btn-return-home-red" type="button" @click="resetToForm">
-                    Quay lại Trang chủ
-                </button>
+                <div class="result-action-wrapper">
+                    <button id="btn-return-home-success" class="btn-return-home-red" type="button" @click="resetToForm">
+                        Quay lại Trang chủ
+                    </button>
+                </div>
             </div>
         </main>
 
@@ -3360,12 +3384,12 @@ document.addEventListener('keydown', function (e) {
 
 .result-main-container {
     min-height: calc(100vh - 140px);
-    padding: 40px 15px 60px 15px;
+    padding: 30px 15px 60px 15px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    background-color: #fafafa;
+    background-color: #f5f5f5;
     position: relative;
     background-position: center top;
     background-repeat: no-repeat;
@@ -3376,21 +3400,40 @@ document.addEventListener('keydown', function (e) {
     position: relative;
     width: 100%;
     max-width: 520px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
+}
+
+.result-header-banner {
+    position: relative;
+    width: 100%;
+    padding: 32px 20px 24px 20px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    border-bottom: 1px solid #f0f0f0;
 }
 
 .result-bg-illustration {
     position: absolute;
-    top: 60px;
-    left: 20%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
-    width: 240px;
-    height: 200px;
+    width: 260px;
+    height: 180px;
     pointer-events: none;
-    opacity: 0.22;
+    opacity: 0.15;
     filter: grayscale(100%) contrast(1.2);
 }
 
@@ -3401,41 +3444,70 @@ document.addEventListener('keydown', function (e) {
 }
 
 .result-status-icon-wrapper {
-    margin-bottom: 12px;
+    margin-bottom: 14px;
     z-index: 2;
 }
 
-.success-check-svg {
-    width: 56px;
-    height: 56px;
+.green-check-circle-svg {
+    width: 86px;
+    height: 86px;
 }
 
 .result-title-text {
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 700;
-    color: #1f2937;
-    margin: 0 0 6px 0;
-    z-index: 2;
-}
-
-.result-sub-text {
-    font-size: 13px;
-    color: #606266;
-    margin: 0 0 24px 0;
+    color: #111827;
+    margin: 0 0 8px 0;
     z-index: 2;
     text-align: center;
 }
 
-.result-bill-card {
-    width: 100%;
-    background-color: #ffffff;
-    border-radius: 10px;
-    border: 1px solid #e5e7eb;
-    padding: 20px 24px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+.result-id-block {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    align-items: center;
+    z-index: 2;
+}
+
+.result-id-label {
+    font-size: 13px;
+    color: #6b7280;
+    margin-bottom: 2px;
+}
+
+.result-id-val-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.btn-copy-tx-id {
+    background: none;
+    border: none;
+    padding: 3px;
+    cursor: pointer;
+    color: #6b7280;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: color 150ms ease, background-color 150ms ease;
+}
+
+.btn-copy-tx-id:hover {
+    color: #111827;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.result-bill-card {
+    width: 100%;
+    padding: 24px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     box-sizing: border-box;
     z-index: 2;
 }
@@ -3448,32 +3520,53 @@ document.addEventListener('keydown', function (e) {
 }
 
 .bill-label {
-    color: #606266;
+    color: #4b5563;
     font-weight: 400;
 }
 
 .bill-val {
-    color: #303133;
+    color: #111827;
+    font-weight: 500;
+}
+
+.bill-val-items {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #111827;
     font-weight: 600;
 }
 
-.bill-val-code {
-    color: #303133;
-    font-weight: 700;
+.bill-kc-icon {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
 }
 
-.bill-val-red {
-    color: rgb(216, 26, 13);
-    font-weight: 700;
-}
-
-.result-action-row {
-    margin-top: 32px;
+.result-action-wrapper {
     width: 100%;
-    max-width: 440px;
-    display: flex;
-    justify-content: center;
+    padding: 8px 32px 32px 32px;
+    box-sizing: border-box;
     z-index: 2;
+}
+
+.btn-return-home-red {
+    width: 100%;
+    height: 48px;
+    background-color: rgb(216, 26, 13);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 150ms ease;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.btn-return-home-red:hover {
+    background-color: rgb(190, 20, 10);
 }
 
 @media (max-width: 640px) {
